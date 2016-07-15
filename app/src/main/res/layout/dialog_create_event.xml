@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="?colorPrimary">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize">
+
+            <ImageView
+                android:id="@+id/img_nav"
+                android:layout_width="56dp"
+                android:scaleType="centerInside"
+                android:layout_height="?actionBarSize"
+                app:srcCompat="@drawable/ic_clear_white_24dp"/>
+
+            <Button
+                android:id="@+id/buttonSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/save"
+                android:textColor="@android:color/white"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_gravity="end|center"/>
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/textTitle"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_marginLeft="72dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_vertical"
+            android:textColor="@android:color/white"
+            style="@style/TextAppearance.AppCompat.Title" />
+
+    </LinearLayout>
+
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include
+                layout="@layout/content_create_event"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="72dp"/>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:paddingLeft="16dp">
+
+                <ImageView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/ic_add_black_24dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="16dp"/>
+
+                <com.freddieptf.shush.calendar.ui.views.SectionView
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:paddingLeft="32dp">
+
+                    <TextView
+                        android:id="@+id/repeats"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:text="Does not Repeat"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="8dp"
+                        />
+
+                </com.freddieptf.shush.calendar.ui.views.SectionView>
+
+            </LinearLayout>
+
+            <include layout="@layout/content_edit_event"/>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+
+</LinearLayout>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#009688</color>
+    <color name="colorPrimaryLight">#B2DFDB</color>
+    <color name="colorPrimaryDark">#00796B</color>
+    <color name="colorAccentLig">#FF9800</color>
+    <color name="colorAccent">#FF5722</color>
+    <color name="primaryText">#212121</color>
+    <color name="secondaryText">#727272</color>
+    <color name="dividerColor">#50B6B6B6</color>
+    <color name="drawer_status_background">#c1c1c1</color>
+
+    <!--Random Swatch-->
+    <color name="c1">#827717</color>
+    <color name="c2">#bf360c</color>
+    <color name="c3">#e65100</color>
+    <color name="c4">#1b5e20</color>
+    <color name="c5">#004d40</color>
+    <color name="c6">#0d47a1</color>
+    <color name="c7">#283593</color>
+
+
+</resources>

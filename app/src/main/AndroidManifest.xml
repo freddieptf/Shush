@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.freddieptf.shush">
+
+    <uses-permission android:name="android.permission.READ_CALENDAR"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="false"
+        android:theme="@style/AppTheme">
+
+        <activity
+            android:name=".calendar.ui.MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.Drawer">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".calendar.ui.ViewEventActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+
+        <activity android:name=".calendar.ui.Settings"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <service android:name=".calendar.services.CalendarChangeService"/>
+        <service android:name=".calendar.services.ShushForegroundService"/>
+
+        <receiver android:name=".calendar.receivers.ShushAlarmReceiver"
+            android:process=":remote"/>
+        <receiver android:name=".calendar.receivers.CalendarChangeReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PROVIDER_CHANGED"/>
+                <data android:scheme="content"/>
+                <data android:host="com.android.calendar"/>
+            </intent-filter>
+        </receiver>
+
+    </application>
+
+</manifest>

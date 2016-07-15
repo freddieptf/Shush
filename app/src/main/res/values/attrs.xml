@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="sectionHeader" format="reference"/>
+    <attr name="sectionExpand" format="boolean"/>
+
+    <declare-styleable name="SectionView">
+        <attr name="sectionHeader"/>
+        <attr name="sectionExpand"/>
+    </declare-styleable>
+
+
+</resources>

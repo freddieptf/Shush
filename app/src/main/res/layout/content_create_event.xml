@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.freddieptf.shush.calendar.ui.views.SectionView
+    android:id="@+id/sectionTrigger"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <LinearLayout
+        android:id="@+id/triggerDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:text="From"
+                android:layout_gravity="start|center_vertical"
+                />
+
+            <Button
+                android:id="@+id/buttonStartDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:textAllCaps="false"
+                android:gravity="center"
+                android:layout_weight="2"
+                android:text="Thu, Jan 28 2016"
+                />
+
+            <Button
+                android:id="@+id/buttonStartTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:textAllCaps="false"
+                android:layout_weight="1"
+                android:text="15:00"/>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
+                android:text="To"/>
+
+
+            <Button
+                android:id="@+id/buttonStopDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:textAllCaps="false"
+                android:gravity="center"
+                android:layout_weight="2"
+                android:text="Thu, Jan 28 2016"/>
+
+            <Button
+                android:id="@+id/buttonStopTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:textAllCaps="false"
+                android:layout_gravity="right|end"
+                android:layout_weight="1"
+                android:text="18:00"/>
+
+        </TableRow>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/triggerWiFi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:padding="16dp">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="WiFi SSID">
+
+            <EditText
+                android:id="@+id/wifiSSID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </android.support.design.widget.TextInputLayout>
+
+    </LinearLayout>
+
+</com.freddieptf.shush.calendar.ui.views.SectionView>
+
+

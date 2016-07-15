@@ -1,0 +1,52 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+
+    defaultConfig {
+        applicationId "com.freddieptf.shush"
+        minSdkVersion 16
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    productFlavors {
+        cal {
+            def cal = rootProject.ext.calOnly
+            applicationId cal.pkgName
+            buildConfigField('boolean', 'isCalOnly', 'true')
+        }
+
+        calNextras {
+            def calNextras = rootProject.ext.calNextras
+            applicationId calNextras.pkgName
+            buildConfigField('boolean', 'isCalOnly', 'false')
+        }
+    }
+}
+
+ext {
+    supportVersion = '23.2.1'
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile "com.android.support:appcompat-v7:$supportVersion"
+    compile "com.android.support:design:$supportVersion"
+    compile "com.android.support:recyclerview-v7:$supportVersion"
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile('com.github.afollestad.material-dialogs:commons:0.8.5.3@aar') {
+        transitive = true
+    }
+    compile 'com.google.code.gson:gson:2.4'
+}

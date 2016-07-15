@@ -1,0 +1,12 @@
+ext {
+    basePkgName = "com.freddieptf.shush"
+
+    calOnly =  [
+            pkgName: "${basePkgName}.calendar"
+    ]
+
+    calNextras = [
+            pkgName: "${basePkgName}.calNextras"
+    ]
+
+}

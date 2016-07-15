@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="16dp"
+        android:paddingBottom="8dp">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginLeft="16dp"
+            app:srcCompat="@drawable/ic_notifications_black_24dp"/>
+
+        <com.freddieptf.shush.calendar.ui.views.SectionView
+            android:id="@+id/sectionSound"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="32dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Set Phone to: "
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_marginBottom="4dp"
+                />
+
+            <RadioGroup
+                android:id="@+id/sectionSound_radioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:saveEnabled="true">
+
+                <RadioButton
+                    android:text="Silent"
+                    android:id="@+id/radioSilent"
+                    android:textColor="@color/primaryText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"/>
+
+                <RadioButton
+                    android:text="Vibrate"
+                    android:id="@+id/radioVibrate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </RadioGroup>
+        </com.freddieptf.shush.calendar.ui.views.SectionView>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="16dp"
+        android:paddingBottom="8dp">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginLeft="16dp"
+            android:src="@drawable/ic_brightness_medium_black_24dp"/>
+
+        <com.freddieptf.shush.calendar.ui.views.SectionView
+            android:id="@+id/sectionBrightness"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="32dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Set the Screen Brightness for this event"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_marginBottom="4dp"
+                />
+
+            <SeekBar
+                android:id="@+id/sectionBrightness_seekbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="100" />
+
+
+        </com.freddieptf.shush.calendar.ui.views.SectionView>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="16dp"
+        android:paddingBottom="8dp">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginLeft="16dp"
+            app:srcCompat="@drawable/ic_network_wifi_black_24dp"/>
+
+        <com.freddieptf.shush.calendar.ui.views.SectionView
+            android:id="@+id/sectionNetwork"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="32dp">
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/sectionNetwork_switchwifi"
+                android:text="Disable Wifi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:paddingRight="16dp"
+                />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/sectionNetwork_switchmobiledata"
+                android:text="Disable Mobile Data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingRight="16dp"
+                android:enabled="false"/>
+
+        </com.freddieptf.shush.calendar.ui.views.SectionView>
+
+    </LinearLayout>
+
+</LinearLayout>

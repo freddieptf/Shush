@@ -4,13 +4,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.freddieptf.shush.calendar.Log;
 import com.freddieptf.shush.R;
 import com.freddieptf.shush.calendar.data.DbHelper;
 

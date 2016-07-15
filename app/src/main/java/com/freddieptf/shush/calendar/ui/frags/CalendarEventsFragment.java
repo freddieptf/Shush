@@ -19,12 +19,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.freddieptf.shush.calendar.Log;
 import com.freddieptf.shush.R;
 import com.freddieptf.shush.calendar.Utils.PrefUtils;
 import com.freddieptf.shush.calendar.adapters.EventsAdapter;

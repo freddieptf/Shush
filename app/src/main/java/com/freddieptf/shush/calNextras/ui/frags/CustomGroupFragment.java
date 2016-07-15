@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +20,9 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.freddieptf.shush.calendar.Log;
 import com.freddieptf.shush.R;
+import com.freddieptf.shush.calNextras.ui.views.CreateEventChooser;
+import com.freddieptf.shush.calNextras.ui.views.CreateEventDialog;
 import com.freddieptf.shush.calendar.Utils.AlarmUtils;
 import com.freddieptf.shush.calendar.adapters.EventsAdapter;
 import com.freddieptf.shush.calendar.adapters.EventsLoader;
@@ -29,8 +31,6 @@ import com.freddieptf.shush.calendar.model.EventModel;
 import com.freddieptf.shush.calendar.ui.MainActivity;
 import com.freddieptf.shush.calendar.ui.ViewEventActivity;
 import com.freddieptf.shush.calendar.ui.views.AutoFitRecyclerView;
-import com.freddieptf.shush.calNextras.ui.views.CreateEventChooser;
-import com.freddieptf.shush.calNextras.ui.views.CreateEventDialog;
 
 import java.util.List;
 

@@ -3,8 +3,8 @@ package com.freddieptf.shush.calendar.receivers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
-import com.freddieptf.shush.calendar.Log;
 import com.freddieptf.shush.calendar.services.CalendarChangeService;
 
 /**

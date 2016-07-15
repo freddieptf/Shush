@@ -10,8 +10,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.CalendarContract;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 
-import com.freddieptf.shush.calendar.Log;
 import com.freddieptf.shush.calendar.data.DbHelper;
 import com.freddieptf.shush.calendar.ui.frags.CalendarEventsFragment;
 

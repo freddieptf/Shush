@@ -6,8 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
-
-import com.freddieptf.shush.calendar.Log;
+import android.util.Log;
 
 /**
  * Created by fred on 12/8/15.

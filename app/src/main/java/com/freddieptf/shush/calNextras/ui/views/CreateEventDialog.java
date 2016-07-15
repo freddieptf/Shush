@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.SwitchCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.freddieptf.shush.calendar.Log;
 import com.freddieptf.shush.R;
 import com.freddieptf.shush.calendar.Utils.AlarmUtils;
 import com.freddieptf.shush.calendar.data.DbHelper;

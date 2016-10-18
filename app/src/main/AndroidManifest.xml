@@ -37,6 +37,7 @@
 
         <receiver android:name=".calendar.receivers.ShushAlarmReceiver"
             android:process=":remote"/>
+
         <receiver android:name=".calendar.receivers.CalendarChangeReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.PROVIDER_CHANGED"/>

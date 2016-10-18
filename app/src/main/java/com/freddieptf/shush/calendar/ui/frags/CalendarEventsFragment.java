@@ -46,6 +46,7 @@ import butterknife.OnClick;
  */
 public class CalendarEventsFragment extends Fragment {
 
+    //@TODO ...rewrite this. Create a presenter and view and model?...also maybe try some RxJava here. OKAY BRO?
     public final String LOG_TAG = getClass().getSimpleName();
     int calLoaderId = 10101;
     int eventLoaderId = 10202;

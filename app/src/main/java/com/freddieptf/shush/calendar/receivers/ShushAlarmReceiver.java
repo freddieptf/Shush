@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.freddieptf.shush.calendar.Utils.AlarmUtils;
+import com.freddieptf.shush.calendar.model.EventModel;
 import com.freddieptf.shush.calendar.services.ShushForegroundService;
 
 /**
@@ -19,7 +20,8 @@ public class ShushAlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "onReceive");
         Intent i = new Intent(context, ShushForegroundService.class);
-        i.putExtra(AlarmUtils.EVENT_EXTRA, intent.getParcelableExtra(AlarmUtils.EVENT_EXTRA))
+        EventModel eventModel = intent.getParcelableExtra(AlarmUtils.EVENT_EXTRA);
+        i.putExtra(AlarmUtils.EVENT_EXTRA, eventModel)
                 .putExtra(AlarmUtils.START, intent.getBooleanExtra(AlarmUtils.START, false))
                 .setAction(intent.getAction());
         context.startService(i);

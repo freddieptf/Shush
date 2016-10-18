@@ -33,6 +33,7 @@ import butterknife.OnClick;
  */
 public class EditEventDialog extends android.support.v4.app.DialogFragment {
 
+    //@Todo see if we can make this better with MVP...and dialog fragment? really mate?
     @Bind(R.id.textTitle) TextView tvTitle;
     @Bind(R.id.sectionSound_radioGroup) RadioGroup soundSettings;
     @Bind(R.id.sectionBrightness_seekbar) SeekBar brightnessSeekBar;

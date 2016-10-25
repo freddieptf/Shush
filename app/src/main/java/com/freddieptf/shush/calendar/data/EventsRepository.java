@@ -46,19 +46,8 @@ public class EventsRepository implements EventsDataSource {
             Log.d(TAG, "getEvents: fetch from cache");
             return Observable.just(cache);
         }else {
-            return localDataSource.getEvents(context)
-                    .isEmpty()
-                    .flatMap(empty -> {
-                        if (empty) {
-                            Log.d(TAG, "getEvents: fetch from calendar and save");
-                            return saveAndGetEvents(context, new DbHelper(context));
-                        } else {
-                            Log.d(TAG, "getEvents: fetch from local");
-                            //meh...calling it twice? what even gets cached by cache()? lol
-                            //// FIXME: 19/10/16
-                            return localDataSource.getEvents(context);
-                        }
-                    })
+            return Observable.concat(localDataSource.getEvents(context), saveAndGetEvents(context, new DbHelper(context)))
+                    .first()
                     .doOnNext(events -> {
                         cache = events;
                         Log.d(TAG, "getEvents: " + (cache == null ? 0 : cache.size()));

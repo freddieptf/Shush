@@ -1,7 +1,8 @@
 apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 24
     buildToolsVersion "23.0.2"
 
     defaultConfig {
@@ -12,41 +13,36 @@ android {
         versionName "1.0"
     }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    productFlavors {
-        cal {
-            def cal = rootProject.ext.calOnly
-            applicationId cal.pkgName
-            buildConfigField('boolean', 'isCalOnly', 'true')
-        }
-
-        calNextras {
-            def calNextras = rootProject.ext.calNextras
-            applicationId calNextras.pkgName
-            buildConfigField('boolean', 'isCalOnly', 'false')
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
 
 ext {
-    supportVersion = '23.2.1'
+    supportVersion = '24.2.1'
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
+
     compile "com.android.support:appcompat-v7:$supportVersion"
     compile "com.android.support:design:$supportVersion"
     compile "com.android.support:recyclerview-v7:$supportVersion"
+
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex:rxjava:1.1.6'
+
     compile 'com.jakewharton:butterknife:7.0.1'
-    compile('com.github.afollestad.material-dialogs:commons:0.8.5.3@aar') {
-        transitive = true
-    }
-    compile 'com.google.code.gson:gson:2.4'
+
+    compile 'com.evernote:android-job:1.1.2'
+
 }

@@ -4,10 +4,10 @@
 
     <item
         android:id="@+id/saveProfile"
-        android:title="@string/save_as_shush_profile" />
+        android:name="@string/save_as_shush_profile" />
 
     <item
         android:id="@+id/applyProfile"
-        android:title="@string/apply_shush_profile"/>
+        android:name="@string/apply_shush_profile"/>
 
 </menu>

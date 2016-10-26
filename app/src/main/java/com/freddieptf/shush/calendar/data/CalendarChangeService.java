@@ -1,4 +1,4 @@
-package com.freddieptf.shush.calendar.services;
+package com.freddieptf.shush.calendar.data;
 
 import android.Manifest;
 import android.app.IntentService;
@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
-
-import com.freddieptf.shush.calendar.data.EventsRepository;
 
 /**
  * Created by fred on 12/18/15.

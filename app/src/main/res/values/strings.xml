@@ -18,7 +18,7 @@
         Click on the add button at the bottom to create one now.</string>
 
     <string name="create_event_group">Create Event Group</string>
-    <string name="title">Title</string>
+    <string name="name">Title</string>
     <string name="create">Create</string>
     <string name="cancel">Cancel</string>
 

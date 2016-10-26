@@ -1,4 +1,4 @@
-package com.freddieptf.shush.calendar.ui.views;
+package com.freddieptf.shush.calendar.ui.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;

@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".calendar.ui.MainActivity"
+            android:name=".calendar.ui.EventsActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,13 +28,9 @@
         <activity android:name=".calendar.ui.EventActivity" />
         <activity android:name=".calendar.ui.Settings" />
 
-        <service android:name=".calendar.services.CalendarChangeService"/>
-        <service android:name=".calendar.services.ShushForegroundService"/>
+        <service android:name=".calendar.data.CalendarChangeService"/>
 
-        <receiver android:name=".calendar.receivers.ShushAlarmReceiver"
-            android:process=":remote"/>
-
-        <receiver android:name=".calendar.receivers.CalendarChangeReceiver">
+        <receiver android:name=".calendar.data.CalendarChangeReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.PROVIDER_CHANGED"/>
                 <data android:scheme="content"/>

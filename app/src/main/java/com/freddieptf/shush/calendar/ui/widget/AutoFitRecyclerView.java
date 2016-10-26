@@ -1,4 +1,4 @@
-package com.freddieptf.shush.calendar.ui.views;
+package com.freddieptf.shush.calendar.ui.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
-import android.util.Log;
 
 /**
  * Created by fred on 12/8/15.
@@ -45,7 +44,6 @@ public class AutoFitRecyclerView extends RecyclerView {
         super.onMeasure(widthSpec, heightSpec);
         if (columnWidth > 0) {
             int spanCount = Math.max(1, getMeasuredWidth() / columnWidth);
-            Log.d("AutoFitRecycler", "span: " + spanCount);
             gridLayoutManager.setSpanCount(spanCount);
         }
     }

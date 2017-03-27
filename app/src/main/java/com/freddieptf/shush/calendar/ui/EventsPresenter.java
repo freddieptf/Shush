@@ -5,14 +5,12 @@ import android.util.Log;
 
 import com.freddieptf.shush.calendar.data.EventsRepository;
 import com.freddieptf.shush.calendar.data.model.Event;
-
 import java.util.List;
 
-import rx.Observer;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by freddieptf on 19/10/16.
@@ -23,28 +21,25 @@ public class EventsPresenter implements BasePresenter, Observer<List<Event>> {
     private final EventsView view;
     private EventsRepository repository;
     private static final String TAG = "CalendarEventsPresenter";
-    private CompositeSubscription compositeSubscription;
 
     public EventsPresenter(EventsView view, EventsRepository repository){
         this.view = view;
         this.repository = repository;
-        compositeSubscription = new CompositeSubscription();
         view.setPresenter(this);
     }
 
     public void subscribe(Context context){
         if(context != null) {
             view.showProgress(true);
-            Subscription subscription = repository.getEvents(context)
+            repository.getEvents(context)
                     .subscribeOn(Schedulers.computation())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(this);
-            compositeSubscription.add(subscription);
         }
     }
 
     public void unSubscribe(){
-        compositeSubscription.clear();
+
     }
 
     public void addObserver(EventsRepository.RepositoryObserver observer){
@@ -56,7 +51,7 @@ public class EventsPresenter implements BasePresenter, Observer<List<Event>> {
     }
 
     @Override
-    public void onCompleted() {
+    public void onComplete() {
         view.showProgress(false);
     }
 
@@ -70,5 +65,10 @@ public class EventsPresenter implements BasePresenter, Observer<List<Event>> {
         view.onLoadEvents(events);
         if(events.isEmpty()) view.showEmptyView(true);
         else view.showEmptyView(false);
+    }
+
+    @Override
+    public void onSubscribe(Disposable d) {
+
     }
 }

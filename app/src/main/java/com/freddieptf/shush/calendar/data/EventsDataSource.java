@@ -7,7 +7,7 @@ import com.freddieptf.shush.calendar.data.model.ShushProfile;
 
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by freddieptf on 18/10/16.

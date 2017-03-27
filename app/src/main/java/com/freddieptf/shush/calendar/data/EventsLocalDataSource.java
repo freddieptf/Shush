@@ -9,7 +9,7 @@ import com.freddieptf.shush.calendar.data.model.ShushProfile;
 import java.util.ArrayList;
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 import static com.freddieptf.shush.calendar.data.Contract.CalendarEventsTable;
 

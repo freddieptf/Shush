@@ -3,20 +3,25 @@ package com.freddieptf.shush.calendar.data;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.CalendarContract;
+import android.util.Log;
+
 import com.freddieptf.shush.calendar.data.model.Event;
 import com.freddieptf.shush.calendar.data.model.ShushProfile;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import rx.Observable;
-import rx.functions.Func1;
+import io.reactivex.Observable;
+import io.reactivex.ObservableOnSubscribe;
+
 
 /**
  * Created by freddieptf on 18/10/16.
  */
 
 public class EventsCalendarDataSource implements EventsDataSource {
+
+    private final String TAG = getClass().getSimpleName();
 
     private final String[] EVENTS_PROJECTION = {
             CalendarContract.Events._ID,
@@ -43,6 +48,7 @@ public class EventsCalendarDataSource implements EventsDataSource {
                 EVENTS_PROJECTION, null, null, null);
 
         if(cursor == null || !cursor.moveToFirst()) return Observable.empty();
+        Log.d(TAG, "getEvents: " + cursor.getCount());
 
         List<Event> events = new ArrayList<>();
         cursor.moveToFirst();

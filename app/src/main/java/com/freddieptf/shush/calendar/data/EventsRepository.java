@@ -12,9 +12,13 @@ import com.freddieptf.shush.calendar.data.model.ShushProfile;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
 
 /**
  * Created by freddieptf on 19/10/16.
@@ -47,7 +51,7 @@ public class EventsRepository implements EventsDataSource {
             return Observable.just(cache);
         }else {
             return Observable.concat(localDataSource.getEvents(context), saveAndGetEvents(context, new DbHelper(context)))
-                    .first()
+                    .take(1)
                     .doOnNext(events -> {
                         cache = events;
                         Log.d(TAG, "getEvents: " + (cache == null ? 0 : cache.size()));
@@ -100,8 +104,8 @@ public class EventsRepository implements EventsDataSource {
         String[] selectionArgs = new String[1];
 
         calendarDataSource.getEvents(context)
-                .flatMap(Observable::from)
-                .doOnCompleted(() -> Log.d(TAG,
+                .flatMap(Observable::fromIterable)
+                .doOnComplete(() -> Log.d(TAG,
                         "copyCalendarEventstoDb: deletedOldEvents: " + deleteOldEvents(dbHelper, startMillis)))
                 .doOnNext(event -> {
                     selectionArgs[0] = String.valueOf(event.getId());

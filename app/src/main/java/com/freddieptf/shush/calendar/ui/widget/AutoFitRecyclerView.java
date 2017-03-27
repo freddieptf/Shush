@@ -3,6 +3,7 @@ package com.freddieptf.shush.calendar.ui.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
@@ -12,7 +13,7 @@ import android.util.AttributeSet;
  */
 public class AutoFitRecyclerView extends RecyclerView {
 
-    StaggeredGridLayoutManager gridLayoutManager;
+    //StaggeredGridLayoutManager gridLayoutManager;
     int columnWidth = -1;
 
     public AutoFitRecyclerView(Context context) {
@@ -34,17 +35,17 @@ public class AutoFitRecyclerView extends RecyclerView {
             array.recycle();
         }
 
-        gridLayoutManager = new StaggeredGridLayoutManager(getContext(), attrs, 0, 0);
-        setLayoutManager(gridLayoutManager);
+//        gridLayoutManager = new StaggeredGridLayoutManager(getContext(), attrs, 0, 0);
+        setLayoutManager(new LinearLayoutManager(context));
 
     }
 
     @Override
     protected void onMeasure(int widthSpec, int heightSpec) {
         super.onMeasure(widthSpec, heightSpec);
-        if (columnWidth > 0) {
-            int spanCount = Math.max(1, getMeasuredWidth() / columnWidth);
-            gridLayoutManager.setSpanCount(spanCount);
-        }
+//        if (columnWidth > 0) {
+//            int spanCount = Math.max(1, getMeasuredWidth() / columnWidth);
+//            gridLayoutManager.setSpanCount(spanCount);
+//        }
     }
 }

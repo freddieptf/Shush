@@ -1,7 +1,6 @@
 package com.freddieptf.shush.calendar.ui;
 
 import android.support.v4.content.ContextCompat;
-import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +12,7 @@ import com.freddieptf.shush.calendar.Utils.DateUtils;
 import com.freddieptf.shush.calendar.data.model.Event;
 import com.freddieptf.shush.calendar.ui.base.BaseViewHolder;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
@@ -27,13 +27,13 @@ public class EventsAdapter extends RecyclerView.Adapter<BaseViewHolder>
         implements View.OnClickListener {
 
     private static final String TAG = "EventsAdapter";
-    private List<Event> list;
-    private ArrayMap<Integer, Integer> headerMap;
+    private List<Event> list = new ArrayList<>();
+    private ArrayList<Integer> headerMap = new ArrayList<>();
     private clickCallback clickCallback;
     private Random random;
 
     private int[] colors = {
-            R.color.colorPrimary, R.color.colorPrimaryDark, R.color.colorAccent, R.color.colorAccentLig
+            R.color.header1, R.color.header2, R.color.header3, R.color.header4, R.color.header5
     };
 
     public static int VIEW_TYPE_HEADER = 3;
@@ -46,33 +46,13 @@ public class EventsAdapter extends RecyclerView.Adapter<BaseViewHolder>
 
     public void swapData(List<Event> list){
         this.list = list;
-        generateHeaderMap(list);
+        this.headerMap = generateHeaderMap(list);
         notifyDataSetChanged();
-    }
-
-    //// FIXME: 3/26/17 WYD BRO
-    public void generateHeaderMap(List<Event> events) {
-        headerMap = new ArrayMap<>();
-        headerMap.put(0, VIEW_TYPE_SECTION_HEADER); // assumptions boi, FIXME: 3/26/17
-        for(int i = 0; i < events.size()-1; i++){
-            Event event = events.get(i);
-            Event futureEvent = events.get((i+1));
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(event.getStartTime());
-            int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-            calendar.setTimeInMillis(futureEvent.getStartTime());
-            int tomorrow = calendar.get(Calendar.DAY_OF_WEEK);
-            if(tomorrow > dayOfWeek){
-                headerMap.put((i+1), VIEW_TYPE_SECTION_HEADER);
-            }
-        }
     }
 
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if(viewType == VIEW_TYPE_HEADER)
-            return new EventsViewholder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_event_header, parent, false));
-        else if (viewType == VIEW_TYPE_SECTION_HEADER)
             return new EventsSectionHeaderHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_event_section_header, parent, false));
         else
             return new EventsViewholder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_event, parent, false));
@@ -92,7 +72,7 @@ public class EventsAdapter extends RecyclerView.Adapter<BaseViewHolder>
 
     @Override
     public int getItemViewType(int position) {
-        return headerMap.containsKey(position) ? headerMap.get(position) : VIEW_TYPE_SECTION_ITEM;
+        return headerMap.indexOf(position) != -1 ? VIEW_TYPE_HEADER : VIEW_TYPE_SECTION_ITEM;
     }
 
     public void setClickCallback(clickCallback clickCallback){
@@ -103,6 +83,27 @@ public class EventsAdapter extends RecyclerView.Adapter<BaseViewHolder>
     public void onClick(View view) {
         int pos = (Integer) view.getTag();
         clickCallback.onClick(list.get(pos));
+    }
+
+    private ArrayList<Integer> generateHeaderMap(List<Event> events){
+        ArrayList<Integer> headerMap = new ArrayList<>();
+        long prev;
+        for(int i = 0; i < events.size(); i++){
+            Event event = events.get(i);
+            if(i == 0){
+                headerMap.add(i);
+            }else {
+                Calendar nowTime = Calendar.getInstance();
+                nowTime.setTimeInMillis(event.getStartTime());
+                prev = events.get((i - 1)).getStartTime();
+                Calendar prevTime = Calendar.getInstance();
+                prevTime.setTimeInMillis(prev);
+                if (nowTime.get(Calendar.DAY_OF_YEAR) > prevTime.get(Calendar.DAY_OF_YEAR)) {
+                    headerMap.add(i);
+                }
+            }
+        }
+        return headerMap;
     }
 
     class EventsViewholder extends BaseViewHolder<Event>{
@@ -128,7 +129,7 @@ public class EventsAdapter extends RecyclerView.Adapter<BaseViewHolder>
         public EventsSectionHeaderHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), colors[random.nextInt(3)]));
+            itemView.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), colors[random.nextInt(4)]));
         }
 
         @Override

@@ -19,5 +19,11 @@
     <color name="c6">#0d47a1</color>
     <color name="c7">#283593</color>
 
+    <color name="header1">#607d8b</color>
+    <color name="header2">#ffb74d</color>
+    <color name="header3">#81c784</color>
+    <color name="header4">#4dd0e1</color>
+    <color name="header5">#7986cb</color>
+
 
 </resources>

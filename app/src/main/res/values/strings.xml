@@ -10,7 +10,7 @@
     <string name="sound_settings">Sound Settings</string>
     <string name="brightness_settings">Brightness</string>
     <string name="network_settings">Network Settings</string>
-    <string name="sync_first_text">Synchronize your google calendar events to get started</string>
+    <string name="sync_first_text">Sync with your calendar events to get started.</string>
     <string name="save">Save</string>
     <string name="save_as_shush_profile">Save as a Shush Profile</string>
     <string name="apply_shush_profile">Apply a Shush Profile</string>

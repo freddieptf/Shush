@@ -1,6 +1,8 @@
 package com.freddieptf.shush.calendar.ui;
 
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.ColorUtils;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -129,7 +131,6 @@ public class EventsAdapter extends RecyclerView.Adapter<BaseViewHolder>
         public EventsSectionHeaderHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), colors[random.nextInt(4)]));
         }
 
         @Override
@@ -138,6 +139,13 @@ public class EventsAdapter extends RecyclerView.Adapter<BaseViewHolder>
             tvStartTime.setText(DateUtils.formatDate(event.getStartTime()));
             duration.setText(DateUtils.formatDate(event.getStartTime()) + " - " + DateUtils.formatDate(event.getEndTime()));
             tvEventDay.setText(DateUtils.getFormattedDate(event.getStartTime(), "EEEE"));
+            if(event.getColor() == -1) {
+                int rcolor = colors[random.nextInt(4)];
+                itemView.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), rcolor));
+                event.setColor(rcolor);
+            } else {
+                itemView.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), event.getColor()));
+            }
         }
     }
 

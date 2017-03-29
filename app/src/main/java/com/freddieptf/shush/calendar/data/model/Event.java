@@ -14,6 +14,7 @@ public class Event implements Parcelable{
     private final long startTime;
     private final long endTime;
     private ShushProfile shushProfile;
+    private int color = -1;
 
     public Event(long id, String name, long startTime, long endTime){
         this.id = id;
@@ -22,12 +23,13 @@ public class Event implements Parcelable{
         this.endTime = endTime;
     }
 
-    private Event(Parcel in) {
+    protected Event(Parcel in) {
         id = in.readLong();
         name = in.readString();
         startTime = in.readLong();
         endTime = in.readLong();
         shushProfile = in.readParcelable(ShushProfile.class.getClassLoader());
+        color = in.readInt();
     }
 
     @Override
@@ -37,6 +39,7 @@ public class Event implements Parcelable{
         dest.writeLong(startTime);
         dest.writeLong(endTime);
         dest.writeParcelable(shushProfile, flags);
+        dest.writeInt(color);
     }
 
     @Override
@@ -78,6 +81,14 @@ public class Event implements Parcelable{
 
     public long getEndTime() {
         return endTime;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
     }
 
     @Override

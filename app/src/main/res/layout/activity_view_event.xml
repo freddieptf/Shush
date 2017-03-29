@@ -27,148 +27,84 @@
             android:layout_width="match_parent"
             android:layout_height="72dp">
 
-                <TextView
-                    android:id="@+id/event_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="72dp"
-                    android:layout_marginStart="72dp"
-                    android:textColor="@android:color/white"
-                    style="@style/TextAppearance.AppCompat.Title"
-                    />
+            <TextView
+                android:id="@+id/event_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="72dp"
+                android:layout_marginStart="72dp"
+                style="@style/TextAppearance.AppCompat.Title" />
 
 
         </FrameLayout>
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_edit"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_mode_edit_white_24dp"
-        android:layout_width="wrap_content"
-        android:layout_gravity="top|start"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="104dp"
-        app:fabSize="mini" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="172dp">
+        android:layout_marginTop="172dp"
+        android:padding="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp">
+            android:orientation="vertical"
+            android:layout_marginRight="8dp">
 
-            <ImageView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_action_calendar_month"
-                />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <android.support.v7.widget.SwitchCompat
+                android:text="Silent Mode"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingLeft="16dp">
+                style="@style/TextAppearance.AppCompat.Title"
+                android:fontFamily="sans-serif-condensed" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textDate"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textTime"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="8dp"
-            android:paddingBottom="4dp"
-            android:visibility="gone"
-            android:id="@+id/lvSoundStatus">
-
-            <ImageView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:scaleType="centerInside"
-                android:layout_marginLeft="16dp"
-                app:srcCompat="@drawable/ic_notifications_black_24dp"/>
+            <android.support.v7.widget.SwitchCompat
+                android:text="Vibrate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:fontFamily="sans-serif-condensed" />
 
             <TextView
-                android:id="@+id/tvSoundSetting"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="16dp"/>
+                android:text="Brightness"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:fontFamily="sans-serif-condensed"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="12dp" />
+
+            <SeekBar
+                android:id="@+id/sectionBrightness_seekbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="100" />
+
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/sectionNetwork_switchwifi"
+                android:text="Disable Wifi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:fontFamily="sans-serif-condensed" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/sectionNetwork_switchmobiledata"
+                android:text="Disable Mobile Data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:fontFamily="sans-serif-condensed" />
+
 
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="8dp"
-            android:paddingBottom="4dp"
-            android:visibility="gone"
-            android:id="@+id/lvBrightnessStatus">
-
-            <ImageView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:scaleType="centerInside"
-                android:layout_marginLeft="16dp"
-                android:src="@drawable/ic_brightness_medium_black_24dp"/>
-
-            <TextView
-                android:id="@+id/tvBrightnessSetting"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_gravity="center_vertical"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="8dp"
-            android:paddingBottom="4dp"
-            android:visibility="gone"
-            android:id="@+id/lvWifiStatus">
-
-            <ImageView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:scaleType="centerInside"
-                android:layout_marginLeft="16dp"
-                app:srcCompat="@drawable/ic_network_wifi_black_24dp"/>
-
-            <TextView
-                android:id="@+id/tvWifiSetting"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_gravity="center_vertical"/>
-
-        </LinearLayout>
-
-
 
 
     </LinearLayout>

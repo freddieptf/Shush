@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.freddieptf.shush.calendar.data.Contract.CalendarEventsTable;
 
@@ -38,31 +39,32 @@ public class EventsLocalDataSource implements EventsDataSource {
 
     @Override
     public Observable<List<Event>> getEvents(Context context) {
-        DbHelper dbHelper = new DbHelper(context);
+        return Observable.fromCallable(() -> {
+            DbHelper dbHelper = new DbHelper(context);
+            Cursor cursor = dbHelper.query(projection, null, null, CalendarEventsTable.COLUMN_BEGIN + " ASC");
 
-        Cursor cursor = dbHelper.query(projection, null, null, CalendarEventsTable.COLUMN_BEGIN + " ASC");
+            if (cursor == null || !cursor.moveToFirst()) return new ArrayList<Event>();
 
-        if(cursor == null || !cursor.moveToFirst()) return Observable.empty();
+            List<Event> events = new ArrayList<>();
+            cursor.moveToFirst();
+            do {
+                Event event = new Event(cursor.getLong(EVENT_ID),
+                        cursor.getString(EVENT_NAME),
+                        cursor.getLong(EVENT_BEGIN),
+                        cursor.getLong(EVENT_END));
 
-        List<Event> events = new ArrayList<>();
-        cursor.moveToFirst();
-        do{
-            Event event = new Event(cursor.getLong(EVENT_ID),
-                    cursor.getString(EVENT_NAME),
-                    cursor.getLong(EVENT_BEGIN),
-                    cursor.getLong(EVENT_END));
+                if (cursor.getInt(EVENT_SHUSH_SET) != 0) {
+                    event.addShushProfile(dbHelper.getShushProfileIfExists(event.getId()));
+                }
 
-            if(cursor.getInt(EVENT_SHUSH_SET) != 0) {
-                event.addShushProfile(dbHelper.getShushProfileIfExists(event.getId()));
-            }
+                events.add(event);
 
-            events.add(event);
+            } while (cursor.moveToNext());
 
-        }while (cursor.moveToNext());
-
-        if(!cursor.isClosed()) cursor.close();
-
-        return Observable.just(events);
+            if (!cursor.isClosed()) cursor.close();
+            return events;
+        })
+                .subscribeOn(Schedulers.io());
     }
 
     @Override

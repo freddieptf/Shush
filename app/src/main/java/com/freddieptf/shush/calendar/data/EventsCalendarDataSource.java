@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.schedulers.Schedulers;
 
 
 /**
@@ -44,25 +44,28 @@ public class EventsCalendarDataSource implements EventsDataSource {
 
     @Override
     public Observable<List<Event>> getEvents(Context context) {
-        Cursor cursor = context.getContentResolver().query(CalendarContract.Events.CONTENT_URI,
-                EVENTS_PROJECTION, null, null, null);
+        return Observable.fromCallable(() -> {
+            Cursor cursor = context.getContentResolver().query(CalendarContract.Events.CONTENT_URI,
+                    EVENTS_PROJECTION, null, null, null);
 
-        if(cursor == null || !cursor.moveToFirst()) return Observable.empty();
-        Log.d(TAG, "getEvents: " + cursor.getCount());
+            if (cursor == null || !cursor.moveToFirst()) return new ArrayList<Event>();
+            Log.d(TAG, "getEvents: " + cursor.getCount());
 
-        List<Event> events = new ArrayList<>();
-        cursor.moveToFirst();
+            List<Event> events = new ArrayList<>();
+            cursor.moveToFirst();
 
-        do{
-            events.add(new Event(cursor.getLong(0),
-                    cursor.getString(COLUMN_TITLE),
-                    cursor.getLong(COLUMN_START),
-                    cursor.getLong(COLUMN_END)));
-        }while (cursor.moveToNext());
+            do {
+                events.add(new Event(cursor.getLong(0),
+                        cursor.getString(COLUMN_TITLE),
+                        cursor.getLong(COLUMN_START),
+                        cursor.getLong(COLUMN_END)));
+            } while (cursor.moveToNext());
 
-        if(!cursor.isClosed()) cursor.close();
+            if (!cursor.isClosed()) cursor.close();
 
-        return Observable.just(events);
+            return events;
+        })
+                .subscribeOn(Schedulers.io());
     }
 
     @Override

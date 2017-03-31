@@ -12,11 +12,11 @@ import com.freddieptf.shush.calendar.data.model.ShushProfile;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
 
@@ -50,13 +50,20 @@ public class EventsRepository implements EventsDataSource {
             Log.d(TAG, "getEvents: fetch from cache");
             return Observable.just(cache);
         }else {
-            return Observable.concat(localDataSource.getEvents(context), saveAndGetEvents(context, new DbHelper(context)))
-                    .take(1)
+            return Observable.concat(localDataSource.getEvents(context),
+                    copyCalendarEventstoDb(context, new DbHelper(context))
+                            .flatMap(new Function<List<Event>, ObservableSource<List<Event>>>() {
+                                @Override
+                                public ObservableSource<List<Event>> apply(@NonNull List<Event> events) throws Exception {
+                                    return localDataSource.getEvents(context);
+                                }
+                            }))
                     .doOnNext(events -> {
                         cache = events;
                         Log.d(TAG, "getEvents: " + (cache == null ? 0 : cache.size()));
                         cacheDirty = false;
-                    });
+                    })
+                    .observeOn(AndroidSchedulers.mainThread());
         }
     }
 
@@ -71,17 +78,12 @@ public class EventsRepository implements EventsDataSource {
     }
 
     public void syncWhenCalendarChange(Context context) {
-        copyCalendarEventstoDb(context, new DbHelper(context));
+        copyCalendarEventstoDb(context, new DbHelper(context)).subscribe();
         cacheDirty = true;
         notifyObservers();
     }
 
-    private Observable<List<Event>> saveAndGetEvents(Context context, DbHelper dbHelper){
-        copyCalendarEventstoDb(context, dbHelper);
-        return localDataSource.getEvents(context);
-    }
-
-    private void copyCalendarEventstoDb(Context context, DbHelper dbHelper) {
+    private Observable<List<Event>> copyCalendarEventstoDb(Context context, DbHelper dbHelper) {
 
         String[] INSTANCE_PROJECTION = new String[] {
                 CalendarContract.Instances.EVENT_ID,      // 0
@@ -103,33 +105,37 @@ public class EventsRepository implements EventsDataSource {
 
         String[] selectionArgs = new String[1];
 
-        calendarDataSource.getEvents(context)
-                .flatMap(Observable::fromIterable)
-                .doOnComplete(() -> Log.d(TAG,
-                        "copyCalendarEventstoDb: deletedOldEvents: " + deleteOldEvents(dbHelper, startMillis)))
-                .doOnNext(event -> {
-                    selectionArgs[0] = String.valueOf(event.getId());
-                    Cursor cursor = context.getContentResolver().query(uri,
-                            INSTANCE_PROJECTION,
-                            selection,
-                            selectionArgs,
-                            null);
-                    if(cursor != null && cursor.moveToFirst()){
-                        event = new Event(cursor.getLong(0), cursor.getString(3), cursor.getLong(1), cursor.getLong(2));
-                        if(!dbHelper.eventExists(String.valueOf(event.getId()))){
-                            dbHelper.insertEvent(event);
-                            Log.d(TAG, "copyCalendarEventstoDb: inserted: " + event.getName());
+        return calendarDataSource.getEvents(context)
+                .concatMap(Observable::fromIterable)
+                .flatMap(new Function<Event, ObservableSource<Event>>() {
+                    @Override
+                    public ObservableSource<Event> apply(@NonNull Event event) throws Exception {
+                        selectionArgs[0] = String.valueOf(event.getId());
+                        Cursor cursor = context.getContentResolver().query(uri,
+                                INSTANCE_PROJECTION,
+                                selection,
+                                selectionArgs,
+                                null);
+                        if (cursor != null && cursor.moveToFirst()) {
+                            event = new Event(cursor.getLong(0), cursor.getString(3), cursor.getLong(1), cursor.getLong(2));
+                            if (!dbHelper.eventExists(String.valueOf(event.getId()))) {
+                                dbHelper.insertEvent(event);
+                                Log.d(TAG, "copyCalendarEventstoDb: inserted: " + event.getName());
+                            } else {
+                                dbHelper.updateEvent(event);
+                                Log.d(TAG, "copyCalendarEventstoDb: updated: " + event.getName());
+                            }
+                            if (!cursor.isClosed()) cursor.close();
+                        } else {
+                            dbHelper.deleteEvent(event.getId() + "");
                         }
-                        else{
-                            dbHelper.updateEvent(event);
-                            Log.d(TAG, "copyCalendarEventstoDb: updated: " + event.getName());
-                        }
-                        if(!cursor.isClosed()) cursor.close();
-                    }else {
-                        dbHelper.deleteEvent(event.getId() + "");
+                        return Observable.just(event);
                     }
                 })
-                .subscribe();
+                .toList()
+                .toObservable()
+                .doOnComplete(() -> Log.d(TAG,
+                        "copyCalendarEventstoDb: deletedOldEvents: " + deleteOldEvents(dbHelper, startMillis)));
     }
 
     private int deleteOldEvents(DbHelper dbHelper, long startMillis){

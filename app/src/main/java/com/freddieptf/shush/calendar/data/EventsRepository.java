@@ -51,7 +51,7 @@ public class EventsRepository implements EventsDataSource {
             return Observable.just(cache);
         }else {
             return Observable.concat(localDataSource.getEvents(context),
-                    copyCalendarEventstoDb(context, new DbHelper(context))
+                    filterAndInsertCalendarEvents(context, new DbHelper(context))
                             .flatMap(new Function<List<Event>, ObservableSource<List<Event>>>() {
                                 @Override
                                 public ObservableSource<List<Event>> apply(@NonNull List<Event> events) throws Exception {
@@ -78,64 +78,66 @@ public class EventsRepository implements EventsDataSource {
     }
 
     public void syncWhenCalendarChange(Context context) {
-        copyCalendarEventstoDb(context, new DbHelper(context)).subscribe();
+        filterAndInsertCalendarEvents(context, new DbHelper(context)).subscribe(); // if it crashes, it crashes.
         cacheDirty = true;
         notifyObservers();
     }
 
-    private Observable<List<Event>> copyCalendarEventstoDb(Context context, DbHelper dbHelper) {
+    private Observable<List<Event>> filterAndInsertCalendarEvents(Context context, DbHelper dbHelper) {
+        return Observable.fromCallable(() -> {
+            String[] INSTANCE_PROJECTION = new String[]{
+                    CalendarContract.Instances.EVENT_ID,      // 0
+                    CalendarContract.Instances.BEGIN,         // 1
+                    CalendarContract.Instances.END,           // 2
+                    CalendarContract.Instances.TITLE          // 3
+            };
 
-        String[] INSTANCE_PROJECTION = new String[] {
-                CalendarContract.Instances.EVENT_ID,      // 0
-                CalendarContract.Instances.BEGIN,         // 1
-                CalendarContract.Instances.END,           // 2
-                CalendarContract.Instances.TITLE          // 3
-        };
+            Calendar currentTime = Calendar.getInstance();
+            long startMillis = currentTime.getTimeInMillis();
+            currentTime.add(Calendar.DATE, 7); // get the events in the next 7 days
+            long endMillis = currentTime.getTimeInMillis();
 
-        Calendar currentTime = Calendar.getInstance();
-        long startMillis = currentTime.getTimeInMillis();
-        currentTime.add(Calendar.DATE, 7); // get the events in the next 7 days
-        long endMillis = currentTime.getTimeInMillis();
+            Uri.Builder builder = CalendarContract.Instances.CONTENT_URI.buildUpon();
+            ContentUris.appendId(builder, startMillis);
+            ContentUris.appendId(builder, endMillis);
+            Uri uri = builder.build();
 
-        String selection = CalendarContract.Instances.EVENT_ID + " = ? ";
-        Uri.Builder builder = CalendarContract.Instances.CONTENT_URI.buildUpon();
-        ContentUris.appendId(builder, startMillis);
-        ContentUris.appendId(builder, endMillis);
-        Uri uri = builder.build();
+            Cursor cursor = context.getContentResolver().query(uri,
+                    INSTANCE_PROJECTION,
+                    null, null, null);
 
-        String[] selectionArgs = new String[1];
+            return cursor;
+        }).flatMap(new Function<Cursor, ObservableSource<List<Event>>>() {
+            @Override
+            public ObservableSource<List<Event>> apply(@NonNull Cursor cursor) throws Exception {
+                List<Event> events = new ArrayList<Event>();
+                if (cursor != null && cursor.moveToFirst()) {
+                    do {
+                        Event event = new Event(cursor.getLong(0), cursor.getString(3), cursor.getLong(1), cursor.getLong(2));
+                        events.add(event);
+                    } while (cursor.moveToNext());
+                }
+                return Observable.just(events);
+//                        return filterCalendarEvents(context, dbHelper, cursor, Calendar.getInstance().getTimeInMillis());
+            }
+        });
 
+    }
+
+    // FIXME: 5/13/17 this needs rethinking...for now lets trust the event instances table
+    private Observable<List<Event>> filterCalendarEvents(Context context, DbHelper dbHelper, Cursor cursor, long startMillis) {
         return calendarDataSource.getEvents(context)
                 .concatMap(Observable::fromIterable)
                 .flatMap(new Function<Event, ObservableSource<Event>>() {
                     @Override
                     public ObservableSource<Event> apply(@NonNull Event event) throws Exception {
-                        selectionArgs[0] = String.valueOf(event.getId());
-                        Cursor cursor = context.getContentResolver().query(uri,
-                                INSTANCE_PROJECTION,
-                                selection,
-                                selectionArgs,
-                                null);
-                        if (cursor != null && cursor.moveToFirst()) {
-                            event = new Event(cursor.getLong(0), cursor.getString(3), cursor.getLong(1), cursor.getLong(2));
-                            if (!dbHelper.eventExists(String.valueOf(event.getId()))) {
-                                dbHelper.insertEvent(event);
-                                Log.d(TAG, "copyCalendarEventstoDb: inserted: " + event.getName());
-                            } else {
-                                dbHelper.updateEvent(event);
-                                Log.d(TAG, "copyCalendarEventstoDb: updated: " + event.getName());
-                            }
-                            if (!cursor.isClosed()) cursor.close();
-                        } else {
-                            dbHelper.deleteEvent(event.getId() + "");
-                        }
                         return Observable.just(event);
                     }
                 })
                 .toList()
                 .toObservable()
                 .doOnComplete(() -> Log.d(TAG,
-                        "copyCalendarEventstoDb: deletedOldEvents: " + deleteOldEvents(dbHelper, startMillis)));
+                        "filterAndInsertCalendarEvents: deletedOldEvents: " + deleteOldEvents(dbHelper, startMillis)));
     }
 
     private int deleteOldEvents(DbHelper dbHelper, long startMillis){

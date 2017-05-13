@@ -93,7 +93,7 @@ public class Event implements Parcelable{
 
     @Override
     public String toString() {
-        return "name: " + name + "\n" + "id: " + id;
+        return "id: " + id + " name: " + name;
     }
 
     @Override

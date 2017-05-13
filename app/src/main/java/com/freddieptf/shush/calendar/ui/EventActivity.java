@@ -68,13 +68,12 @@ public class EventActivity extends AppCompatActivity {
         drawable1.setColorFilter(colorInt, PorterDuff.Mode.SRC_ATOP);
         toolbar.setNavigationIcon(drawable1);
         eventName.setTextColor(colorInt);
-//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) getWindow().setStatusBarColor(colorInt);
     }
 
     private int getEventColor(Event event){
         switch (event.getColor()){
             default:
-                return ContextCompat.getColor(this, event.getColor());
+                return event.getColor() != -1 ? ContextCompat.getColor(this, event.getColor()) : ContextCompat.getColor(this, R.color.primaryText);
         }
     }
 
